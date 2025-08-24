@@ -1,0 +1,151 @@
+{
+  "name": "Agent-pipeline",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Appoinment Calender",
+        "formDescription": "We will make an appointment and send mail",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name",
+              "placeholder": "Name.......",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email",
+              "fieldType": "email",
+              "placeholder": "Email.......",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Date",
+              "fieldType": "date",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "2b9a3767-5e36-4085-98a8-373831c5fbb6",
+      "name": "On form submission",
+      "webhookId": "b6cc56c4-3a2b-4965-b5e8-5d54f782a256"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d104ab7c-7d6c-4270-84c0-436dd76b7de7",
+              "leftValue": "={{ $json.Date }}",
+              "rightValue": "2025-08-15T13:43:37",
+              "operator": {
+                "type": "dateTime",
+                "operation": "beforeOrEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        192,
+        32
+      ],
+      "id": "f24cb1b8-0fbc-42e7-ab7e-54a06ffd1b7c",
+      "name": "If"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        400,
+        144
+      ],
+      "id": "d9ec29ef-e92a-4454-ab8c-006fe295236b",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "sendTo": "uroojkhan19786@gmail.com",
+        "subject": "=Appointment confiremd fro  {{ $('On form submission').item.json.Name }}",
+        "message": "=Hello {{ $('On form submission').item.json.Name }}\nYour appointment is for the date  {{ $('On form submission').item.json.Date }} \nThank you!!!!",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        400,
+        -64
+      ],
+      "id": "25e6dd20-0884-4e7e-8478-701a2c57f18c",
+      "name": "Send a message",
+      "webhookId": "4f93cf5b-a9ce-45ef-9da7-b5b67de70b45",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "buspcSa7faK9Rffh",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "e6e72093-d4e4-4e81-b998-656809cb8deb",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "57c2c400a6694318630e13f523a85674f9983380771cd50cfb9c072e5df3a055"
+  },
+  "id": "AmxtKves11Gn92y0",
+  "tags": []
+}
